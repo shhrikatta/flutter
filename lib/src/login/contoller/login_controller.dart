@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:globant_quiz/src/login/network/login_api.dart';
+import 'package:globant_quiz/src/login/network/models/login_req_model.dart';
 
 class LoginController extends GetxController {
   // email validations
@@ -42,6 +44,24 @@ class LoginController extends GetxController {
       return _passwordError.value;
     }
   }
+
+  // on Submit
+  RxBool showLoader = false.obs;
+
+  Future<bool?> get submitValid async {
+    if (_passwordError.value.isEmpty && _emailError.value.isEmpty) {
+      showLoader(true);
+      return _loginNetwork.fetchLoginApi(LoginApiRequest(
+              email: _emailController.value,
+              password: _passwordController.value)
+          .toJson());
+    } else {
+      return null;
+    }
+  }
+
+  //API
+  final LoginNetwork _loginNetwork = LoginNetwork();
 
   @override
   void onInit() {}

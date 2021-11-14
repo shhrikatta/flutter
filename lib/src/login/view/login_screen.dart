@@ -8,6 +8,8 @@ class LoginScreen extends GetView<LoginController> {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(LoginController());
+
     return Scaffold(
       backgroundColor: Colors.black,
       body: Stack(
@@ -33,18 +35,21 @@ class LoginScreen extends GetView<LoginController> {
                     ),
                     buildPasswordField(controller),
                     const Spacer(), // 1/6
-                    buildLoginButtonField(context),
+                    buildLoginButtonField(context, controller),
                     const Spacer(flex: 2), // it will take 2/6 spaces
                   ],
                 ),
               ),
             ),
           ),
-/*
-          const Center(
-            child: CircularProgressIndicator(),
+          Obx(
+            () => Visibility(
+              visible: controller.showLoader.value,
+              child: const Center(
+                child: CircularProgressIndicator(),
+              ),
+            ),
           ),
-*/
         ],
       ),
     );
@@ -82,7 +87,7 @@ class LoginScreen extends GetView<LoginController> {
           fillColor: const Color(0xFF1C2341),
           hintText: "Password",
           errorText: controller.onPasswordError,
-          border: OutlineInputBorder(
+          border: const OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(12)),
           ),
         ),
@@ -90,9 +95,13 @@ class LoginScreen extends GetView<LoginController> {
     );
   }
 
-  buildLoginButtonField(BuildContext context) {
+  buildLoginButtonField(BuildContext context, LoginController controller) {
     return InkWell(
       // onTap: () => Get.to(QuizScreen()),
+      onTap: () {
+        print("clickeeeeeed");
+        controller.submitValid;
+      },
       child: Container(
         width: double.infinity,
         alignment: Alignment.center,
