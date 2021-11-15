@@ -63,38 +63,49 @@ class QuizDashboard extends GetView {
                           const SizedBox(
                             height: 40,
                           ), // 1/6
-                          Container(
-                            margin: const EdgeInsets.only(top: kDefaultPadding),
-                            padding: const EdgeInsets.all(kDefaultPadding),
-                            decoration: BoxDecoration(
-                              border:
-                                  Border.all(color: const Color(0xFFed6f9e)),
-                              borderRadius: BorderRadius.circular(15),
-                              gradient: kSecondaryGradient,
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Icon(
-                                    Icons.arrow_drop_down_circle_outlined),
-                                const SizedBox(
-                                  height: 20,
-                                ), // 1/6
-                                const Text('Level 1'),
-                                const SizedBox(
-                                  height: 20,
-                                ), // 1/6
-                                Text(
-                                  "Globant Tech",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline4
-                                      ?.copyWith(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold),
+                          Stack(
+                            alignment: Alignment.topRight,
+                            children: [
+                              Container(
+                                // margin: const EdgeInsets.only(top: kDefaultPadding),
+                                padding: const EdgeInsets.all(kDefaultPadding),
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: const Color(0xFFed6f9e)),
+                                  borderRadius: BorderRadius.circular(15),
+                                  gradient: kSecondaryGradient,
                                 ),
-                              ],
-                            ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Icon(
+                                        Icons.arrow_drop_down_circle_outlined),
+                                    const SizedBox(
+                                      height: 20,
+                                    ), // 1/6
+                                    const Text('Level 1'),
+                                    const SizedBox(
+                                      height: 20,
+                                    ), // 1/6
+                                    Text(
+                                      "Globant Tech",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline4
+                                          ?.copyWith(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const Image(
+                                width: 100,
+                                image:
+                                    AssetImage('assets/icons/air-balloon.png'),
+                              ),
+                            ],
                           ),
                           const SizedBox(
                             height: 40,
