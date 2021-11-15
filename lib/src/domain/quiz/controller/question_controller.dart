@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:get/state_manager.dart';
 import 'package:globant_quiz/src/domain/quiz/models/quiz_questions.dart';
 import 'package:globant_quiz/src/domain/quiz/network/quiz_api_provider.dart';
+import 'package:globant_quiz/src/domain/quiz/view/score_screen.dart';
 
 // We use get package for our state management
 
@@ -24,24 +25,12 @@ class QuestionController extends GetxController
 
   RxList q = [].obs;
 
-/*
-  final List<Question> _questions = sample_data
-      .map(
-        (question) => Question(
-            id: question['id'],
-            question: question['question'],
-            options: question['options'],
-            answer: question['answer_index']),
-      )
-      .toList();
-*/
-
-  List<QuizQuestions> get questions => q.value as List<QuizQuestions>;
+  RxList get questions => q;
 
   bool _isAnswered = false;
   bool get isAnswered => _isAnswered;
 
-  late int _correctAns;
+  int _correctAns = 0;
   int get correctAns => _correctAns;
 
   late int _selectedAns;
@@ -64,11 +53,6 @@ class QuestionController extends GetxController
     // so our plan is to fill the progress bar within 15s
     _animationController =
         AnimationController(duration: const Duration(seconds: 15), vsync: this);
-    _animation = Tween<double>(begin: 0, end: 1).animate(_animationController)
-      ..addListener(() {
-        // update like setState
-        update();
-      });
 
     // start our animation
     // Once 15s is completed go to the next qn
@@ -81,7 +65,7 @@ class QuestionController extends GetxController
   @override
   void onClose() {
     super.onClose();
-    _animationController.dispose();
+    // _animationController.dispose();
     _pageController.dispose();
   }
 
@@ -117,7 +101,7 @@ class QuestionController extends GetxController
       _animationController.forward().whenComplete(nextQuestion);
     } else {
       // Get package provide us simple way to navigate another page
-      // Get.to(ScoreScreen());
+      Get.off(const ScoreScreen());
     }
   }
 
@@ -129,6 +113,11 @@ class QuestionController extends GetxController
     showLoader(true);
     final questionResp = await quizApiProvider.fetchQuestionsApi();
     q(questionResp);
+    _animation = Tween<double>(begin: 0, end: 1).animate(_animationController)
+      ..addListener(() {
+        // update like setState
+        update();
+      });
     showLoader(false);
   }
 }
