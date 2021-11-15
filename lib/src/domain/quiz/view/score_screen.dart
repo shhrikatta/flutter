@@ -2,14 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:globant_quiz/src/domain/dashboard/view/quiz_dashboard.dart';
 import 'package:globant_quiz/src/domain/quiz/controller/question_controller.dart';
+import 'package:globant_quiz/src/domain/quiz/models/quiz_questions.dart';
 import 'package:globant_quiz/src/helpers/constants.dart';
 
 class ScoreScreen extends GetView<QuestionController> {
-  const ScoreScreen({Key? key}) : super(key: key);
+  List<QuizQuestions> _questions = [];
+  int? _correctAnswers = 0;
+
+  ScoreScreen({List<QuizQuestions>? questions, int? correctAnswers, Key? key})
+      : super(key: key) {
+    if (questions != null) _questions = questions;
+    _correctAnswers = correctAnswers;
+  }
 
   @override
   Widget build(BuildContext context) {
-    QuestionController _qnController = Get.put(QuestionController());
+    QuestionController _qnController = Get.put(QuestionController(
+        quizQuestions: _questions, correctAns: _correctAnswers));
     return Scaffold(
       backgroundColor: Colors.black,
       body: Center(
@@ -27,7 +36,7 @@ class ScoreScreen extends GetView<QuestionController> {
               height: 20,
             ),
             Text(
-              "${_qnController.correctAns}/${_qnController.questions.length}",
+              "${_qnController.numOfCorrectAns}/${_qnController.questions.length}",
               style: Theme.of(context)
                   .textTheme
                   .headline4

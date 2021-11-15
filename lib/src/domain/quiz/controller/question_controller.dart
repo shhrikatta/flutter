@@ -9,10 +9,12 @@ class QuestionController extends GetxController
     with SingleGetTickerProviderMixin {
   List<QuizQuestions> _questions = [];
 
-  QuestionController({List<QuizQuestions>? quizQuestions}) {
+  QuestionController({List<QuizQuestions>? quizQuestions, int? correctAns}) {
     if (quizQuestions != null && quizQuestions.isNotEmpty) {
       _questions = quizQuestions;
     }
+
+    if (correctAns != null) _numOfCorrectAns = correctAns;
   }
 
   // Lets animated our progress bar
@@ -82,7 +84,7 @@ class QuestionController extends GetxController
     _animationController.stop();
     update();
 
-    // Once user select an ans after 3s it will go to the next qn
+    // Once user select an ans after 2s it will go to the next qn
     Future.delayed(const Duration(seconds: 2), () {
       nextQuestion();
     });
@@ -102,7 +104,10 @@ class QuestionController extends GetxController
       _animationController.forward().whenComplete(nextQuestion);
     } else {
       // Get package provide us simple way to navigate another page
-      Get.off(const ScoreScreen());
+      Get.off(ScoreScreen(
+        questions: questions,
+        correctAnswers: numOfCorrectAns,
+      ));
     }
   }
 
