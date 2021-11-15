@@ -26,13 +26,6 @@ class MyApp extends StatelessWidget {
           page: () {
             final _storage = GetStorage();
             final _alreadyLoggedIn = _storage.hasData(kLoginStorage);
-
-            print(
-                '****************************************************************');
-            print(
-                '******************************* is login stored: $_alreadyLoggedIn');
-            print(
-                '****************************************************************');
             return _alreadyLoggedIn ? const QuizScreen() : const LoginScreen();
           },
         ),
