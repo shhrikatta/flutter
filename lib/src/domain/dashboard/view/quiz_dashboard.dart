@@ -61,10 +61,11 @@ class QuizDashboard extends GetView {
                           ),
                           const Text("Be the first!"),
                           const SizedBox(
-                            height: 40,
+                            height: 150,
                           ), // 1/6
                           Stack(
                             alignment: Alignment.topRight,
+                            overflow: Overflow.visible,
                             children: [
                               Container(
                                 // margin: const EdgeInsets.only(top: kDefaultPadding),
@@ -100,15 +101,19 @@ class QuizDashboard extends GetView {
                                   ],
                                 ),
                               ),
-                              const Image(
-                                width: 100,
-                                image:
-                                    AssetImage('assets/icons/air-balloon.png'),
+                              const Positioned(
+                                top: -85,
+                                right: 20,
+                                child: Image(
+                                  width: 150,
+                                  image: AssetImage(
+                                      'assets/icons/air-balloon.png'),
+                                ),
                               ),
                             ],
                           ),
                           const SizedBox(
-                            height: 40,
+                            height: 60,
                           ), // 1/6
                           buildLoginButtonField(context, _dshbrdController),
                         ],
