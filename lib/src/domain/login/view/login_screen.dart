@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:globant_quiz/src/domain/login/controller/login_controller.dart';
+import 'package:globant_quiz/src/domain/quiz/view/quiz_screen.dart';
 import 'package:globant_quiz/src/helpers/constants.dart';
-import 'package:globant_quiz/src/login/contoller/login_controller.dart';
 
 /*
 class LoginScreen extends GetView<LoginController> {
@@ -226,9 +227,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
   buildLoginButtonField(BuildContext context, LoginController controller) {
     return InkWell(
-      // onTap: () => Get.to(QuizScreen()),
-      onTap: () {
-        controller.submitValid;
+      onTap: () async {
+        bool? isLoginSuccess = await controller.submitValid ?? false;
+
+        if (isLoginSuccess == true) {
+          Get.off(const QuizScreen());
+        }
       },
       child: Container(
         width: double.infinity,

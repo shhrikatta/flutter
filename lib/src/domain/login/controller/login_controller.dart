@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:globant_quiz/src/domain/login/network/login_api.dart';
+import 'package:globant_quiz/src/domain/login/network/models/login_req_model.dart';
 import 'package:globant_quiz/src/helpers/constants.dart';
-import 'package:globant_quiz/src/login/network/login_api.dart';
-import 'package:globant_quiz/src/login/network/models/login_req_model.dart';
 
 class LoginController extends GetxController {
   // email validations
@@ -54,7 +54,10 @@ class LoginController extends GetxController {
   }
 
   Future<bool?> get submitValid async {
-    if (_passwordError.value.isEmpty && _emailError.value.isEmpty) {
+    if (_passwordError.value.isEmpty &&
+        _emailError.value.isEmpty &&
+        _emailController.value.isNotEmpty &&
+        _passwordController.value.isNotEmpty) {
       showLoader(true);
       final loginResp = await _loginNetwork.fetchLoginApi(LoginApiRequest(
               email: _emailController.value,
@@ -63,14 +66,15 @@ class LoginController extends GetxController {
       showLoader(false);
 
       if (loginResp) {
-        _loggedInState.write(kLoginStorage, true);
+        _loggedInState.write(kLoginStorage, _emailController.value);
         return true;
       } else {
-        _loggedInState.write(kLoginStorage, false);
         return false;
       }
     } else {
       showLoader(false);
+      onEmailEntered(_emailController.value);
+      onPasswordEntered(_passwordController.value);
       return null;
     }
   }

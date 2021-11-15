@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:globant_quiz/src/login/view/login_screen.dart';
-
-import 'src/login/contoller/login_controller.dart';
+import 'package:globant_quiz/src/domain/login/view/login_screen.dart';
+import 'package:globant_quiz/src/domain/quiz/view/quiz_screen.dart';
+import 'package:globant_quiz/src/helpers/constants.dart';
 
 void main() async {
-  GetStorage.init();
+  await GetStorage.init();
   runApp(const MyApp());
 }
 
-class MyApp extends GetView<LoginController> {
+class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
@@ -20,19 +20,23 @@ class MyApp extends GetView<LoginController> {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark(),
-      home: const LoginScreen(),
-/*
       getPages: [
         GetPage(
           name: '/',
           page: () {
-            return controller.loggedInStorage
-                ? QuizScreen()
-                : const LoginScreen();
+            final _storage = GetStorage();
+            final _alreadyLoggedIn = _storage.hasData(kLoginStorage);
+
+            print(
+                '****************************************************************');
+            print(
+                '******************************* is login stored: $_alreadyLoggedIn');
+            print(
+                '****************************************************************');
+            return _alreadyLoggedIn ? const QuizScreen() : const LoginScreen();
           },
         ),
       ],
-*/
     );
   }
 }

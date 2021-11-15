@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:get/get.dart';
-import 'package:globant_quiz/src/login/network/models/login_resp_model.dart';
+import 'package:globant_quiz/src/domain/login/network/models/login_resp_model.dart';
 
 class LoginNetwork extends GetConnect {
   Future<bool> fetchLoginApi(Map data) async {
