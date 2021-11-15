@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:globant_quiz/src/helpers/constants.dart';
 import 'package:globant_quiz/src/login/network/login_api.dart';
 import 'package:globant_quiz/src/login/network/models/login_req_model.dart';
 
@@ -6,6 +8,12 @@ class LoginController extends GetxController {
   // email validations
   final RxString _emailController = ''.obs;
   final RxString _emailError = ''.obs;
+  // on Submit
+  RxBool showLoader = false.obs;
+  //API
+  final LoginNetwork _loginNetwork = LoginNetwork();
+  // is logged-in storage
+  final _loggedInState = GetStorage();
 
   onEmailEntered(data) {
     _emailController(data);
@@ -45,26 +53,29 @@ class LoginController extends GetxController {
     }
   }
 
-  // on Submit
-  RxBool showLoader = false.obs;
-
   Future<bool?> get submitValid async {
     if (_passwordError.value.isEmpty && _emailError.value.isEmpty) {
       showLoader(true);
-      return _loginNetwork.fetchLoginApi(LoginApiRequest(
+      final loginResp = await _loginNetwork.fetchLoginApi(LoginApiRequest(
               email: _emailController.value,
               password: _passwordController.value)
           .toJson());
+      showLoader(false);
+
+      if (loginResp) {
+        _loggedInState.write(kLoginStorage, true);
+        return true;
+      } else {
+        _loggedInState.write(kLoginStorage, false);
+        return false;
+      }
     } else {
+      showLoader(false);
       return null;
     }
   }
 
-  //API
-  final LoginNetwork _loginNetwork = LoginNetwork();
-
-  @override
-  void onInit() {}
+  get loggedInStorage => _loggedInState.read(kLoginStorage) ?? false;
 
   @override
   void onClose() {

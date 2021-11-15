@@ -40,6 +40,8 @@ dependencies:
 
   # state management, intelligent dependency injection, and route management
   get: ^4.3.8
+  # local key value storage
+  get_storage: ^2.0.3
 
 dev_dependencies:
   flutter_test:
