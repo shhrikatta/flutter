@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:globant_quiz/src/domain/quiz/controller/question_controller.dart';
-import 'package:globant_quiz/src/domain/quiz/models/questions.dart';
+import 'package:globant_quiz/src/domain/quiz/models/quiz_questions.dart';
 import 'package:globant_quiz/src/helpers/constants.dart';
 
 import 'option.dart';
@@ -13,7 +13,7 @@ class QuestionCard extends StatelessWidget {
     required this.question,
   }) : super(key: key);
 
-  final Question question;
+  final QuizQuestions question;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class QuestionCard extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            question.question,
+            question.question ?? '',
             style: Theme.of(context)
                 .textTheme
                 .headline6
@@ -36,10 +36,10 @@ class QuestionCard extends StatelessWidget {
           ),
           const SizedBox(height: kDefaultPadding / 2),
           ...List.generate(
-            question.options.length,
+            question.choices?.length ?? 0,
             (index) => Option(
               index: index,
-              text: question.options[index],
+              text: question.choices?[index] ?? '',
               press: () => _controller.checkAns(question, index),
             ),
           ),

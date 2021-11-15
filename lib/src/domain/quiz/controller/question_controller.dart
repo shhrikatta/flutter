@@ -1,14 +1,19 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get/state_manager.dart';
-import 'package:globant_quiz/src/domain/quiz/models/questions.dart';
+import 'package:globant_quiz/src/domain/quiz/models/quiz_questions.dart';
+import 'package:globant_quiz/src/domain/quiz/network/quiz_api_provider.dart';
 
 // We use get package for our state management
 
 class QuestionController extends GetxController
     with SingleGetTickerProviderMixin {
-  // Lets animated our progress bar
+  // lets call api
+  final quizApiProvider = QuizApiProvider();
+  // show loader
+  RxBool showLoader = false.obs;
 
+  // Lets animated our progress bar
   late AnimationController _animationController;
   late Animation _animation;
   // so that we can access our animation outside
@@ -17,6 +22,9 @@ class QuestionController extends GetxController
   late PageController _pageController;
   PageController get pageController => _pageController;
 
+  RxList q = [].obs;
+
+/*
   final List<Question> _questions = sample_data
       .map(
         (question) => Question(
@@ -26,7 +34,9 @@ class QuestionController extends GetxController
             answer: question['answer_index']),
       )
       .toList();
-  List<Question> get questions => _questions;
+*/
+
+  List<QuizQuestions> get questions => q.value as List<QuizQuestions>;
 
   bool _isAnswered = false;
   bool get isAnswered => _isAnswered;
@@ -47,6 +57,9 @@ class QuestionController extends GetxController
   // called immediately after the widget is allocated memory
   @override
   void onInit() {
+    // cal quiz api
+    getQuizQuestions();
+
     // Our animation duration is 15 s
     // so our plan is to fill the progress bar within 15s
     _animationController =
@@ -72,10 +85,10 @@ class QuestionController extends GetxController
     _pageController.dispose();
   }
 
-  void checkAns(Question question, int selectedIndex) {
+  void checkAns(QuizQuestions question, int selectedIndex) {
     // because once user press any option then it will run
     _isAnswered = true;
-    _correctAns = question.answer;
+    _correctAns = 1;
     _selectedAns = selectedIndex;
 
     if (_correctAns == _selectedAns) _numOfCorrectAns++;
@@ -91,7 +104,7 @@ class QuestionController extends GetxController
   }
 
   void nextQuestion() {
-    if (_questionNumber.value != _questions.length) {
+    if (_questionNumber.value != q.value.length) {
       _isAnswered = false;
       _pageController.nextPage(
           duration: const Duration(milliseconds: 250), curve: Curves.ease);
@@ -110,5 +123,12 @@ class QuestionController extends GetxController
 
   void updateTheQnNum(int index) {
     _questionNumber.value = index + 1;
+  }
+
+  Future<void> getQuizQuestions() async {
+    showLoader(true);
+    final questionResp = await quizApiProvider.fetchQuestionsApi();
+    q(questionResp);
+    showLoader(false);
   }
 }

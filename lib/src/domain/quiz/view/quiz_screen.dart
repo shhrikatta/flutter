@@ -6,7 +6,7 @@ import 'package:globant_quiz/src/domain/quiz/controller/question_controller.dart
 
 import 'widgets/body.dart';
 
-class QuizScreen extends StatelessWidget {
+class QuizScreen extends GetView<QuestionController> {
   const QuizScreen({Key? key}) : super(key: key);
 
   @override
