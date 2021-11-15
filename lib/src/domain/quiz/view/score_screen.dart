@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:globant_quiz/src/domain/dashboard/view/quiz_dashboard.dart';
 import 'package:globant_quiz/src/domain/quiz/controller/question_controller.dart';
-import 'package:globant_quiz/src/domain/quiz/view/quiz_screen.dart';
 import 'package:globant_quiz/src/helpers/constants.dart';
 
 class ScoreScreen extends GetView<QuestionController> {
@@ -26,30 +26,28 @@ class ScoreScreen extends GetView<QuestionController> {
             const SizedBox(
               height: 20,
             ),
-            Obx(
-              () => Text(
-                "${_qnController.correctAns}/${_qnController.questions.length}",
-                style: Theme.of(context)
-                    .textTheme
-                    .headline4
-                    ?.copyWith(color: kSecondaryColor),
-              ),
+            Text(
+              "${_qnController.correctAns}/${_qnController.questions.length}",
+              style: Theme.of(context)
+                  .textTheme
+                  .headline4
+                  ?.copyWith(color: kSecondaryColor),
             ),
             const SizedBox(
               height: 40,
             ),
-            buildLoginButtonField(context),
+            buildLoginButtonField(context, _qnController),
           ],
         ),
       ),
     );
   }
 
-  buildLoginButtonField(BuildContext context) {
+  buildLoginButtonField(BuildContext context, QuestionController qnController) {
     return Padding(
       padding: const EdgeInsets.all(40),
       child: InkWell(
-        onTap: () => Get.off(const QuizScreen()),
+        onTap: () => Get.offAll(const QuizDashboard()),
         child: Container(
           width: double.infinity,
           alignment: Alignment.center,

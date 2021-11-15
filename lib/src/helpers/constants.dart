@@ -11,6 +11,12 @@ const kPrimaryGradient = LinearGradient(
   end: Alignment.centerRight,
 );
 
+const kSecondaryGradient = LinearGradient(
+  colors: [Color(0xFFed6f9e), Color(0xFFec8a6d)],
+  begin: Alignment.centerLeft,
+  end: Alignment.centerRight,
+);
+
 const double kDefaultPadding = 20.0;
 
 const String kLoginStorage = 'login';

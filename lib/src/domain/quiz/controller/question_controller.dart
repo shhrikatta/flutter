@@ -2,17 +2,18 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get/state_manager.dart';
 import 'package:globant_quiz/src/domain/quiz/models/quiz_questions.dart';
-import 'package:globant_quiz/src/domain/quiz/network/quiz_api_provider.dart';
 import 'package:globant_quiz/src/domain/quiz/view/score_screen.dart';
 
 // We use get package for our state management
-
 class QuestionController extends GetxController
     with SingleGetTickerProviderMixin {
-  // lets call api
-  final quizApiProvider = QuizApiProvider();
-  // show loader
-  RxBool showLoader = false.obs;
+  List<QuizQuestions> _questions = [];
+
+  QuestionController({List<QuizQuestions>? quizQuestions}) {
+    if (quizQuestions != null && quizQuestions.isNotEmpty) {
+      _questions = quizQuestions;
+    }
+  }
 
   // Lets animated our progress bar
   late AnimationController _animationController;
@@ -23,9 +24,7 @@ class QuestionController extends GetxController
   late PageController _pageController;
   PageController get pageController => _pageController;
 
-  RxList q = [].obs;
-
-  RxList get questions => q;
+  List<QuizQuestions> get questions => _questions;
 
   bool _isAnswered = false;
   bool get isAnswered => _isAnswered;
@@ -46,14 +45,16 @@ class QuestionController extends GetxController
   // called immediately after the widget is allocated memory
   @override
   void onInit() {
-    // cal quiz api
-    getQuizQuestions();
-
-    // Our animation duration is 15 s
     // so our plan is to fill the progress bar within 15s
     _animationController =
         AnimationController(duration: const Duration(seconds: 15), vsync: this);
 
+    // Our animation duration is 15 s
+    _animation = Tween<double>(begin: 0, end: 1).animate(_animationController)
+      ..addListener(() {
+        // update like setState
+        update();
+      });
     // start our animation
     // Once 15s is completed go to the next qn
     _animationController.forward().whenComplete(nextQuestion);
@@ -65,6 +66,7 @@ class QuestionController extends GetxController
   @override
   void onClose() {
     super.onClose();
+    _animationController.dispose();
     _pageController.dispose();
   }
 
@@ -87,7 +89,7 @@ class QuestionController extends GetxController
   }
 
   void nextQuestion() {
-    if (_questionNumber.value != q.value.length) {
+    if (_questionNumber.value != questions.length) {
       _isAnswered = false;
       _pageController.nextPage(
           duration: const Duration(milliseconds: 250), curve: Curves.ease);
@@ -106,17 +108,5 @@ class QuestionController extends GetxController
 
   void updateTheQnNum(int index) {
     _questionNumber.value = index + 1;
-  }
-
-  Future<void> getQuizQuestions() async {
-    showLoader(true);
-    final questionResp = await quizApiProvider.fetchQuestionsApi();
-    q(questionResp);
-    _animation = Tween<double>(begin: 0, end: 1).animate(_animationController)
-      ..addListener(() {
-        // update like setState
-        update();
-      });
-    showLoader(false);
   }
 }

@@ -53,35 +53,20 @@ class Body extends StatelessWidget {
               ),
               const Divider(thickness: 1.5),
               const SizedBox(height: kDefaultPadding),
-              Obx(
-                () => Visibility(
-                  visible: !_questionController.showLoader.value,
-                  child: Expanded(
-                    child: Obx(
-                      () => PageView.builder(
-                        // Block swipe to next qn
-                        physics: const NeverScrollableScrollPhysics(),
-                        controller: _questionController.pageController,
-                        onPageChanged: _questionController.updateTheQnNum,
-                        itemCount: _questionController.q.value.length,
-                        itemBuilder: (context, index) => QuestionCard(
-                            question: _questionController.q.value[index]),
-                      ),
-                    ),
-                  ),
+              Expanded(
+                child: PageView.builder(
+                  // Block swipe to next qn
+                  physics: NeverScrollableScrollPhysics(),
+                  controller: _questionController.pageController,
+                  onPageChanged: _questionController.updateTheQnNum,
+                  itemCount: _questionController.questions.length,
+                  itemBuilder: (context, index) => QuestionCard(
+                      question: _questionController.questions[index]),
                 ),
               ),
             ],
           ),
-        ),
-        Obx(
-          () => Visibility(
-            visible: _questionController.showLoader.value,
-            child: const Center(
-              child: CircularProgressIndicator(),
-            ),
-          ),
-        ),
+        )
       ],
     );
   }

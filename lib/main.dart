@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:globant_quiz/src/domain/dashboard/view/quiz_dashboard.dart';
 import 'package:globant_quiz/src/domain/login/view/login_screen.dart';
-import 'package:globant_quiz/src/domain/quiz/view/quiz_screen.dart';
 import 'package:globant_quiz/src/helpers/constants.dart';
 
 void main() async {
@@ -26,7 +26,9 @@ class MyApp extends StatelessWidget {
           page: () {
             final _storage = GetStorage();
             final _alreadyLoggedIn = _storage.hasData(kLoginStorage);
-            return _alreadyLoggedIn ? const QuizScreen() : const LoginScreen();
+            return _alreadyLoggedIn
+                ? const QuizDashboard()
+                : const LoginScreen();
           },
         ),
       ],
