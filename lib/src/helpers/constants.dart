@@ -14,3 +14,4 @@ const kPrimaryGradient = LinearGradient(
 const double kDefaultPadding = 20.0;
 
 const String kLoginStorage = 'login';
+const String BASE_URL = 'https://fakes-server.herokuapp.com/api/v1';
