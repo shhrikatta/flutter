@@ -8,5 +8,5 @@
 Our quiz app contains a total of three-screen, the login screen where a user submits their credentials, then the main screen called the questions screen. Each question has 4 options 
 and once the user clicks on the option if the answer is correct then it turns green otherwise red. At the end score screen where you can check your score.
 
-This is a complete functional quiz app that works on both Android and iOS devices. For state management, we use the getX package.
+This is a complete functional quiz app that works on both Android, iOS and Web platforms. For state management, we use the getX package.
 
