@@ -10,3 +10,15 @@ and once the user clicks on the option if the answer is correct then it turns gr
 
 This is a complete functional quiz app that works on both Android, iOS and Web platforms. For state management, we use the getX package.
 
+
+
+https://user-images.githubusercontent.com/10129441/150355186-1283a40a-0ed8-44ce-9278-c52b780bf3f9.mov
+
+
+
+https://user-images.githubusercontent.com/10129441/150355197-d8555d49-a25b-4eca-89e1-8eb8b754d2ae.mov
+
+
+
+https://user-images.githubusercontent.com/10129441/150355208-4b998a98-9515-4d24-87bc-4d1190422f52.mov
+
